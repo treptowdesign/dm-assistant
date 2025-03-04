@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import Link from 'next/link';
 
 export default function CampaignsList() {
   const [campaigns, setCampaigns] = useState([]);
-  const [loading, setLoading] = useState(true); // ✅ Add loading state
-  const [error, setError] = useState(null); // ✅ Track API errors
+  const [loading, setLoading] = useState(true); // load state
+  const [error, setError] = useState(null); // errors
 
   useEffect(() => {
     async function fetchCampaigns() {
@@ -28,7 +29,7 @@ export default function CampaignsList() {
 
   return (
     <div>
-      <h1>Campaigns</h1>
+      <h1><Link href='/campaigns'>Campaigns</Link></h1>
       {campaigns.length === 0 ? (
         <p>No Campaigns Found</p>
       ) : (
