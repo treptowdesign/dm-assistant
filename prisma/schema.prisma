@@ -6,6 +6,10 @@
 
 // npx prisma studio
 
+// EXAMPLE MIGRATE COMMAND
+// npx prisma migrate dev --name add_campaigns
+// npx prisma generate
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,4 +24,13 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  authorId    Int
+  author      User     @relation(fields: [authorId], references: [id])
 }
