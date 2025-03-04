@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from 'next/link';
 
 export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState([]);
@@ -66,6 +67,9 @@ export default function CampaignsPage() {
           </li>
         ))}
       </ul>
+      <div>
+        <Link href='/'>Back to Home</Link>
+      </div>
     </div>
   );
 }

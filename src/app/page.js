@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import AuthNav from "@/app/components/AuthNav";
 import TestBtn from "@/app/components/TestBtn";
 
-import "@/app/general.sass"
+import "@/app/general.sass";
 
 export default function Home() {
   return (
@@ -21,6 +21,8 @@ export default function Home() {
         />
         
         <AuthNav />
+
+
         <TestBtn />
 
       </main>

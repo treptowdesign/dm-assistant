@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation"; 
+import Link from 'next/link';
 
 export default function CampaignPage() {
   const params = useParams(); 
-  const router = useRouter(); // ✅ Needed for redirection
+  const router = useRouter(); // for redirection
   const id = params.id; 
 
   const [campaign, setCampaign] = useState(null);
@@ -65,9 +66,12 @@ export default function CampaignPage() {
       <input value={name} onChange={(e) => setName(e.target.value)} />
       <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
       <button onClick={updateCampaign}>Save</button>
-      <button onClick={deleteCampaign} style={{ color: "red", marginLeft: "10px" }}>
+      <button onClick={deleteCampaign}>
         Delete Campaign
       </button>
+      <div>
+        <Link href='/campaigns/'>Back to Campaigns</Link> 
+      </div>
     </div>
   );
 }

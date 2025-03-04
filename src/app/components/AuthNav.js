@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from 'next/link';
 import { useAuth } from "./AuthProvider";
 
 import LoginForm from "@/app/components/LoginForm";
@@ -25,6 +26,9 @@ export default function AuthNav() {
         {user ? (
           <>
             <LogoutButton />
+            <nav>
+              <Link href='/campaigns'>Campaigns</Link>  
+            </nav>
           </>
         ) : (
           <>
