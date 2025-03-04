@@ -61,9 +61,9 @@ export default function CampaignsPage() {
       <ul>
         {campaigns.map((campaign) => (
           <li key={campaign.id}>
-            <a href={`/campaigns/${campaign.id}`}>
-            <b>{campaign.name}</b>: {campaign.description}
-            </a>
+              <Link href={`/campaigns/${campaign.id}`}>
+                  <b>{campaign.name}</b>: {campaign.description}
+              </Link>
           </li>
         ))}
       </ul>
