@@ -8,6 +8,8 @@ import LoginForm from "@/app/components/LoginForm";
 import RegisterForm from "@/app/components/RegisterForm";
 import LogoutButton from "@/app/components/LogoutButton";
 
+import CampaignList from "@/app/components/CampaignList";
+
 export default function AuthNav() {
   const { user, authLoading } = useAuth();
   const [displayLogin, setDisplayLogin] = useState(true);
@@ -29,6 +31,7 @@ export default function AuthNav() {
             <nav>
               <Link href='/campaigns'>Campaigns</Link>  
             </nav>
+            <CampaignList />
           </>
         ) : (
           <>
