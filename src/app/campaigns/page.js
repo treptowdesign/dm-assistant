@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from 'next/link';
+import Form from 'next/form';
 
 export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState([]);
@@ -39,8 +40,8 @@ export default function CampaignsPage() {
 
   return (
     <div>
-      <h1>Campaigns</h1>
-      <form onSubmit={handleCreateCampaign}>
+      <h1>Campaigns!</h1>
+      <Form onSubmit={handleCreateCampaign}>
         <input
           type="text"
           placeholder="Campaign Name"
@@ -57,7 +58,7 @@ export default function CampaignsPage() {
         <button type="submit" disabled={loading}>
           {loading ? "Creating..." : "Create Campaign"}
         </button>
-      </form>
+      </Form>
       <ul>
         {campaigns.map((campaign) => (
           <li key={campaign.id}>
