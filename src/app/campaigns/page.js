@@ -1,38 +1,44 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from 'next/link';
+import Link from "next/link";
+import { getCampaigns } from "@/app/actions/campaigns/getCampaigns";
+import { createCampaign } from "@/app/actions/campaigns/createCampaign";
 
 export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function loadCampaigns() {
+    setLoading(true);
+    const data = await getCampaigns();
+    if (data.error) {
+      setError("Error loading campaigns.");
+    } else {
+      setCampaigns(data);
+      setError(null);
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
-    fetchCampaigns();
+    loadCampaigns(); 
   }, []);
-
-  async function fetchCampaigns() {
-    const res = await fetch("/api/campaigns");
-    const data = await res.json();
-    setCampaigns(data);
-  }
 
   async function handleCreateCampaign(event) {
     event.preventDefault();
     setLoading(true);
 
-    const res = await fetch("/api/campaigns", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description }),
-    });
-
-    if (res.ok) {
-      fetchCampaigns(); // Refresh campaigns list
+    const result = await createCampaign(name, description);
+    if (!result.error) {
       setName("");
       setDescription("");
+      await loadCampaigns(); 
+    } else {
+      setError("Error creating campaign.");
     }
     setLoading(false);
   }
@@ -58,17 +64,26 @@ export default function CampaignsPage() {
           {loading ? "Creating..." : "Create Campaign"}
         </button>
       </form>
-      <ul>
-        {campaigns.map((campaign) => (
-          <li key={campaign.id}>
-              <Link href={`/campaigns/${campaign.id}`}>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading ? (
+        <p>Loading campaigns...</p>
+      ) : (
+        <ul>
+          {campaigns.length === 0 ? (
+            <p>No Campaigns Found</p>
+          ) : (
+            campaigns.map((campaign) => (
+              <li key={campaign.id}>
+                <Link href={`/campaigns/${campaign.id}`}>
                   <b>{campaign.name}</b>: {campaign.description}
-              </Link>
-          </li>
-        ))}
-      </ul>
+                </Link>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
       <div>
-        <Link href='/'>Back to Home</Link>
+        <Link href="/">Back to Home</Link>
       </div>
     </div>
   );
