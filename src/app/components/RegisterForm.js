@@ -4,25 +4,16 @@ import { useState } from "react";
 import { useAuth } from "./AuthProvider";
 
 export default function RegisterForm() {
-  const { login } = useAuth();
+  const { register } = useAuth(); // ✅ Use register instead of login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      login(data.user, data.token);
-    } else {
-      setMessage(data.error || "Error registering.");
+    const result = await register(email, password); // ✅ Call register()
+    if (result.error) {
+      setMessage(result.error);
     }
   }
 

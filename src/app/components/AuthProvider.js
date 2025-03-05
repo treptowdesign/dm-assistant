@@ -1,50 +1,49 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { getCookie, setCookie, deleteCookie } from "cookies-next";
+import { getUserFromServer } from "@/app/actions/auth/getUser";
+import { loginUser } from "@/app/actions/auth/login";
+import { logoutUser } from "@/app/actions/auth/logout";
+import { registerUser } from "@/app/actions/auth/register"; 
 
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    const storedData = getCookie("chargen_authToken_client");
-
-    if (storedData && typeof storedData === "string") {
-      try {
-        const parsedData = JSON.parse(storedData);
-        if (parsedData?.user && parsedData?.token) {
-          setUser(parsedData.user);
-          setToken(parsedData.token);
-        }
-      } catch (error) {
-        console.error("Error parsing auth token from cookie:", error);
-      }
+    async function loadUser() {
+      const userData = await getUserFromServer();
+      if (userData) setUser(userData);
+      setAuthLoading(false);
     }
-    setAuthLoading(false);
+    loadUser();
   }, []);
 
-  const login = (user, token) => {
-    setUser(user);
-    setToken(token);
-    setCookie("chargen_authToken_client", JSON.stringify({ user, token }), {
-      maxAge: 60 * 60 * 24, // 1-day expiration
-      httpOnly: false,
-    });
+  const login = async (email, password) => {
+    const result = await loginUser(email, password);
+    if (!result.error) {
+      setUser(result.user);
+    }
+    return result;
   };
 
   const logout = async () => {
-    await fetch("/api/logout", { method: "POST" });
+    await logoutUser();
     setUser(null);
-    setToken(null);
-    deleteCookie("chargen_authToken_client");
+  };
+
+  const register = async (email, password) => {
+    const result = await registerUser(email, password);
+    if (!result.error) {
+      setUser(result.user);
+    }
+    return result;
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, authLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, authLoading, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
