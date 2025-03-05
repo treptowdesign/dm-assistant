@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getCampaign } from "@/app/actions/campaigns/getCampaign";
 import { updateCampaign } from "@/app/actions/campaigns/updateCampaign";
 import { deleteCampaign } from "@/app/actions/campaigns/deleteCampaign";
+import styles from "@/app/page.module.css";
 
 export default function CampaignPage() {
   const params = useParams();
@@ -57,15 +58,17 @@ export default function CampaignPage() {
   if (!campaign) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h1>Edit Campaign</h1>
-      <input value={name} onChange={(e) => setName(e.target.value)} />
-      <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-      <button onClick={handleUpdateCampaign}>Save</button>
-      <button onClick={handleDeleteCampaign}>Delete Campaign</button>
-      <div>
-        <Link href="/campaigns/">Back to Campaigns</Link>
-      </div>
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <h1>Edit Campaign</h1>
+        <input value={name} onChange={(e) => setName(e.target.value)} />
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+        <button onClick={handleUpdateCampaign}>Save</button>
+        <button onClick={handleDeleteCampaign}>Delete Campaign</button>
+        <div>
+          <Link href="/campaigns/">Back to Campaigns</Link>
+        </div>
+      </main>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getCampaigns } from "@/app/actions/campaigns/getCampaigns";
 import { createCampaign } from "@/app/actions/campaigns/createCampaign";
+import styles from "@/app/page.module.css";
 
 export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState([]);
@@ -44,47 +45,50 @@ export default function CampaignsPage() {
   }
 
   return (
-    <div>
-      <h1>Campaigns!</h1>
-      <form onSubmit={handleCreateCampaign}>
-        <input
-          type="text"
-          placeholder="Campaign Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Create Campaign"}
-        </button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {loading ? (
-        <p>Loading campaigns...</p>
-      ) : (
-        <ul>
-          {campaigns.length === 0 ? (
-            <p>No Campaigns Found</p>
-          ) : (
-            campaigns.map((campaign) => (
-              <li key={campaign.id}>
-                <Link href={`/campaigns/${campaign.id}`}>
-                  <b>{campaign.name}</b>: {campaign.description}
-                </Link>
-              </li>
-            ))
-          )}
-        </ul>
-      )}
-      <div>
-        <Link href="/">Back to Home</Link>
-      </div>
+    <div className={styles.page}>
+      <main className={styles.main}>
+
+        <h1>Campaigns!</h1>
+        <form onSubmit={handleCreateCampaign}>
+          <input
+            type="text"
+            placeholder="Campaign Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <textarea
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? "Creating..." : "Create Campaign"}
+          </button>
+        </form>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {loading ? (
+          <p>Loading campaigns...</p>
+        ) : (
+          <ul>
+            {campaigns.length === 0 ? (
+              <p>No Campaigns Found</p>
+            ) : (
+              campaigns.map((campaign) => (
+                <li key={campaign.id}>
+                  <Link href={`/campaigns/${campaign.id}`}>
+                    <b>{campaign.name}</b>: {campaign.description}
+                  </Link>
+                </li>
+              ))
+            )}
+          </ul>
+        )}
+        <div>
+          <Link href="/">Back to Home</Link>
+        </div>
+      </main>
     </div>
   );
 }
