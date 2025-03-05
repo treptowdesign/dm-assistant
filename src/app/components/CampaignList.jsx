@@ -28,7 +28,7 @@ export default function CampaignsList() {
   return (
     <div>
       <h1>
-        <Link href="/campaigns">Campaigns</Link>
+        <Link href="/campaigns">Campaigns (General)</Link>
       </h1>
       {campaigns.length === 0 ? (
         <p>No Campaigns Found</p>

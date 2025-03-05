@@ -3,14 +3,18 @@ import styles from "./page.module.css";
 import AuthNav from "@/app/components/AuthNav";
 import TestBtn from "@/app/components/TestBtn";
 
+import { getUserFromServer } from "@/app/actions/auth/getUser"; // getUser action 
+
 import "@/app/general.sass";
 
-export default function Home() {
+export default async function Home() {
+  const userData = await getUserFromServer();
   return (
     <div className={styles.page}>
-
-
       <main className={styles.main}>
+
+        <p>user id: {userData.id}, email: {userData.email}</p>
+
         <Image
           className={styles.logo}
           src="/next.svg"
@@ -21,7 +25,6 @@ export default function Home() {
         />
         
         <AuthNav />
-
 
         <TestBtn />
 
