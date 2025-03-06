@@ -66,7 +66,7 @@ export default function CampaignPage() {
         <button onClick={handleUpdateCampaign}>Save</button>
         <button onClick={handleDeleteCampaign}>Delete Campaign</button>
         <div>
-          <Link href="/campaigns/">Back to Campaigns</Link>
+        <Link href="/">Home</Link> /  <Link href="/campaigns/">Back to Campaigns</Link>
         </div>
       </main>
     </div>

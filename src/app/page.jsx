@@ -13,7 +13,7 @@ export default async function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
 
-        {userData ? (<h1>Welcome {userData.email} ({userData.id})</h1>) : (<h1>Logged out</h1>)}
+        {userData ? (<h4>Welcome {userData.email}, id: ({userData.id})</h4>) : (<h4>Logged out</h4>)}
 
         <Image
           className={styles.logo}
