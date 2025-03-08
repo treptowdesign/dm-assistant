@@ -13,7 +13,7 @@ export default function CampaignList({ campaigns }) {
             campaigns.map((campaign) => (
             <li key={campaign.id}>
                 <Link href={`/campaigns/${campaign.id}`}>
-                    <b>{campaign.name}</b>: 
+                    <b>{campaign.name} ({campaign.id})</b>: 
                     <div>{campaign.description}</div>
                 </Link>
             </li>

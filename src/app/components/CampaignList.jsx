@@ -36,10 +36,10 @@ export default function CampaignsList() {
         <ul>
           {campaigns.map((campaign) => (
             <li key={campaign.id}>
-              <Link href={`/campaigns/${campaign.id}`}>
+              <div>
                 <b>{campaign.name}</b>: 
-                <div>{campaign.description}</div>
-              </Link>
+                <div><Link href={`/campaigns/${campaign.id}`}>View</Link></div>
+              </div>
             </li>
           ))}
         </ul>
