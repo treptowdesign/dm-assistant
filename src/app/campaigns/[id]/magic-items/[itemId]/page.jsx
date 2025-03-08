@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getMagicItem } from "@/app/actions/magicItems/getMagicItem";
 import { updateMagicItem } from "@/app/actions/magicItems/updateMagicItem";
 import { deleteMagicItem } from "@/app/actions/magicItems/deleteMagicItem";
+import { magicItemSchema } from "@/schema/MagicItem";
 import styles from "@/app/page.module.css";
 
 export default function MagicItemPage() {
@@ -14,13 +15,14 @@ export default function MagicItemPage() {
   const campaignId = params.id;
   const itemId = params.itemId;
 
-  const [item, setItem] = useState(null);
-  const [name, setName] = useState("");
-  const [type, setType] = useState("Weapon");
-  const [rarity, setRarity] = useState("Common");
-  const [requiresAttunement, setRequiresAttunement] = useState(false);
-  const [description, setDescription] = useState("");
-  const [valueGP, setValueGP] = useState("");
+  const [formData, setFormData] = useState(magicItemSchema.parse({
+    name: "",
+    type: "Weapon",
+    rarity: "Common",
+    requiresAttunement: false,
+    description: "",
+    valueGP: 0,
+  }));
 
   useEffect(() => {
     async function loadItem() {
@@ -29,40 +31,33 @@ export default function MagicItemPage() {
         console.error("Error fetching magic item:", data.error);
         return;
       }
-      setItem(data);
-      setName(data.name);
-      setType(data.type);
-      setRarity(data.rarity);
-      setRequiresAttunement(data.requiresAttunement);
-      setDescription(data.description);
-      setValueGP(data.valueGP || ""); // Handle potential undefined values
+      setFormData((prev) => ({
+        ...prev,
+        ...data, // Spread fetched data into the state
+        valueGP: data.valueGP || 0, // Ensure undefined doesn't break the number input
+      }));
     }
-
     loadItem();
   }, [itemId]);
 
   async function handleUpdate() {
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("type", type);
-    formData.append("rarity", rarity);
-    formData.append("requiresAttunement", requiresAttunement.toString());
-    formData.append("description", description);
-    formData.append("valueGP", valueGP);
+    // Validate before sending
+    const validation = magicItemSchema.safeParse(formData);
+    if (!validation.success) {
+      console.error("Validation failed:", validation.error.errors);
+      return;
+    }
 
-    const result = await updateMagicItem(itemId, formData);
-    if (result && result.error) {
+    const formDataObject = new FormData();
+    Object.entries(validation.data).forEach(([key, value]) => {
+      formDataObject.append(key, value.toString());
+    });
+
+    const result = await updateMagicItem(itemId, formDataObject);
+    if (result?.error) {
       console.error("Error updating magic item:", result.error);
     } else {
-      setItem((prev) => ({
-        ...prev,
-        name,
-        type,
-        rarity,
-        requiresAttunement,
-        description,
-        valueGP,
-      }));
+      setFormData(validation.data);
     }
   }
 
@@ -71,14 +66,33 @@ export default function MagicItemPage() {
     if (!confirmDelete) return;
 
     const result = await deleteMagicItem(itemId);
-    if (result && result.error) {
+    if (result?.error) {
       console.error("Error deleting magic item:", result.error);
     } else {
       router.push(`/campaigns/${campaignId}`);
     }
   }
 
-  if (!item) return <div>Loading...</div>;
+  function handleChange(e) {
+    const { name, value, type, checked } = e.target;
+    let newValue;
+    switch (type) {
+      case "checkbox":
+        newValue = checked;
+        break;
+      case "number":
+        newValue = value === "" ? undefined : Number(value);
+        break;
+      default:
+        newValue = value;
+    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: newValue,
+    }));
+  }
+
+  if (!formData) return <div>Loading...</div>;
 
   return (
     <div className={styles.page}>
@@ -86,13 +100,13 @@ export default function MagicItemPage() {
         <h1>Edit Magic Item</h1>
         <div>
           <label>Name:</label>
-          <input value={name} onChange={(e) => setName(e.target.value)} />
+          <input name="name" value={formData.name} onChange={handleChange} />
         </div>
 
         <div>
           <label>Type:</label>
-          <select value={type} onChange={(e) => setType(e.target.value)}>
-            {["Weapon", "Armor", "Wondrous Item", "Potion", "Ring", "Rod", "Scroll", "Staff", "Wand", "Other"].map((t) => (
+          <select name="type" value={formData.type} onChange={handleChange}>
+            {magicItemSchema.shape.type.options.map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
@@ -100,8 +114,8 @@ export default function MagicItemPage() {
 
         <div>
           <label>Rarity:</label>
-          <select value={rarity} onChange={(e) => setRarity(e.target.value)}>
-            {["Common", "Uncommon", "Rare", "Very Rare", "Legendary", "Artifact", "Varies"].map((r) => (
+          <select name="rarity" value={formData.rarity} onChange={handleChange}>
+            {magicItemSchema.shape.rarity.options.map((r) => (
               <option key={r} value={r}>{r}</option>
             ))}
           </select>
@@ -109,17 +123,17 @@ export default function MagicItemPage() {
 
         <div>
           <label>Requires Attunement:</label>
-          <input type="checkbox" checked={requiresAttunement} onChange={(e) => setRequiresAttunement(e.target.checked)} />
+          <input type="checkbox" name="requiresAttunement" checked={formData.requiresAttunement} onChange={handleChange} />
         </div>
 
         <div>
           <label>Description:</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea name="description" value={formData.description} onChange={handleChange} />
         </div>
 
         <div>
           <label>Gold Value (GP):</label>
-          <input type="number" value={valueGP} onChange={(e) => setValueGP(e.target.value)} />
+          <input type="number" name="valueGP" value={formData.valueGP} onChange={handleChange} />
         </div>
 
         <button onClick={handleUpdate}>Update Item</button>
