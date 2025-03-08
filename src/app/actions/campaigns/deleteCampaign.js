@@ -8,11 +8,26 @@ export async function deleteCampaign(campaignId) {
     const user = await getUserFromServer();
     if (!user) return { error: "Unauthorized" };
 
-    await prisma.campaign.delete({
-      where: { id: parseInt(campaignId, 10), authorId: user.id },
+    const campaign = await prisma.campaign.findUnique({
+      where: { id: parseInt(campaignId, 10) },
+      include: { magicItems: true }, // associated magic items
     });
 
-    return { message: "Campaign deleted" };
+    if (!campaign || campaign.authorId !== user.id) {
+      return { error: "Campaign not found or unauthorized." };
+    }
+
+    // delete magic items 
+    await prisma.magicItem.deleteMany({
+      where: { campaignId: campaign.id },
+    });
+
+    // delete the campaign
+    await prisma.campaign.delete({
+      where: { id: campaign.id },
+    });
+
+    return { message: "Campaign and associated magic items deleted" };
   } catch (error) {
     console.error("Error deleting campaign:", error);
     return { error: "Internal server error" };
