@@ -3,21 +3,21 @@
 import prisma from "@/models/prismaClient";
 import { getUserFromServer } from "@/app/actions/auth/getUser";
 
-export async function getCampaign(campaignId) {
+export async function getMagicItems(campaignId) {
   try {
     const user = await getUserFromServer();
     if (!user) return { error: "Unauthorized" };
 
     const campaign = await prisma.campaign.findUnique({
       where: { id: parseInt(campaignId, 10), authorId: user.id },
-      include: { magicItems: true }, // Fetch related Magic Items
+      include: { magicItems: true },
     });
 
-    if (!campaign) return { error: "Campaign not found" };
+    if (!campaign) return { error: "Campaign not found." };
 
-    return campaign;
+    return campaign.magicItems;
   } catch (error) {
-    console.error("Error fetching campaign:", error);
+    console.error("Error fetching magic items:", error);
     return { error: "Internal server error" };
   }
 }

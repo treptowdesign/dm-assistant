@@ -33,4 +33,17 @@ model Campaign {
   description String
   authorId    Int
   author      User     @relation(fields: [authorId], references: [id])
+  magicItems  MagicItem[]
+}
+
+model MagicItem {
+  id               Int      @id @default(autoincrement())
+  name             String
+  type            String  
+  rarity          String  
+  requiresAttunement Boolean
+  description      String
+  valueGP         Int?
+  campaignId      Int
+  campaign        Campaign @relation(fields: [campaignId], references: [id])
 }

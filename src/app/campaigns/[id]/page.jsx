@@ -65,8 +65,26 @@ export default function CampaignPage() {
         <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
         <button onClick={handleUpdateCampaign}>Save</button>
         <button onClick={handleDeleteCampaign}>Delete Campaign</button>
+
+        <h2>Magic Items</h2>
+        {campaign.magicItems.length > 0 ? (
+          <ul>
+            {campaign.magicItems.map((item) => (
+              <li key={item.id}>
+                <Link href={`/campaigns/${id}/magic-items/${item.id}`}>
+                  {item.name} ({item.rarity})
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>0 magic items</p>
+        )}
+
+        <Link href={`/campaigns/${id}/magic-items/new`}>Create Magic Item</Link>
+
         <div>
-        <Link href="/">Home</Link> /  <Link href="/campaigns/">Back to Campaigns</Link>
+          <Link href="/">Home</Link> / <Link href="/campaigns/">Back to Campaigns</Link>
         </div>
       </main>
     </div>
