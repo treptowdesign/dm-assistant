@@ -7,6 +7,10 @@ import { getMagicItem } from "@/app/actions/magicItems/getMagicItem";
 import { updateMagicItem } from "@/app/actions/magicItems/updateMagicItem";
 import { deleteMagicItem } from "@/app/actions/magicItems/deleteMagicItem";
 import { magicItemSchema } from "@/schema/MagicItem";
+import TextInput from "@/app/components/inputs/TextInput";
+import SelectInput from "@/app/components/inputs/SelectInput";
+import CheckboxInput from "@/app/components/inputs/CheckboxInput";
+import NumberInput from "@/app/components/inputs/NumberInput";
 import styles from "@/app/page.module.css";
 
 export default function MagicItemPage() {
@@ -23,6 +27,7 @@ export default function MagicItemPage() {
     description: "",
     valueGP: 0,
   }));
+  const [errors, setErrors] = useState(null);
 
   useEffect(() => {
     async function loadItem() {
@@ -33,29 +38,37 @@ export default function MagicItemPage() {
       }
       setFormData((prev) => ({
         ...prev,
-        ...data, // Spread fetched data into the state
+        ...data,
         valueGP: data.valueGP || 0, // Ensure undefined doesn't break the number input
       }));
     }
     loadItem();
   }, [itemId]);
 
+  function handleChange(field, value) {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
+
   async function handleUpdate() {
     // Validate before sending
     const validation = magicItemSchema.safeParse(formData);
     if (!validation.success) {
-      console.error("Validation failed:", validation.error.errors);
+      setErrors(validation.error.errors);
       return;
     }
 
     const formDataObject = new FormData();
     Object.entries(validation.data).forEach(([key, value]) => {
-      formDataObject.append(key, value.toString());
+      formDataObject.append(key, value?.toString() ?? "");
     });
 
     const result = await updateMagicItem(itemId, formDataObject);
     if (result?.error) {
       console.error("Error updating magic item:", result.error);
+      setErrors([{ message: result.error }]);
     } else {
       setFormData(validation.data);
     }
@@ -73,68 +86,25 @@ export default function MagicItemPage() {
     }
   }
 
-  function handleChange(e) {
-    const { name, value, type, checked } = e.target;
-    let newValue;
-    switch (type) {
-      case "checkbox":
-        newValue = checked;
-        break;
-      case "number":
-        newValue = value === "" ? undefined : Number(value);
-        break;
-      default:
-        newValue = value;
-    }
-    setFormData((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
-  }
-
-  if (!formData) return <div>Loading...</div>;
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>Edit Magic Item</h1>
-        <div>
-          <label>Name:</label>
-          <input name="name" value={formData.name} onChange={handleChange} />
-        </div>
+        <h1>Edit Magic Item!!!!!</h1>
 
-        <div>
-          <label>Type:</label>
-          <select name="type" value={formData.type} onChange={handleChange}>
-            {magicItemSchema.shape.type.options.map((t) => (
-              <option key={t} value={t}>{t}</option>
+        {errors && (
+          <div className={styles.error}>
+            {errors.map((err, index) => (
+              <p key={index}>{err.message}</p>
             ))}
-          </select>
-        </div>
+          </div>
+        )}
 
-        <div>
-          <label>Rarity:</label>
-          <select name="rarity" value={formData.rarity} onChange={handleChange}>
-            {magicItemSchema.shape.rarity.options.map((r) => (
-              <option key={r} value={r}>{r}</option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label>Requires Attunement:</label>
-          <input type="checkbox" name="requiresAttunement" checked={formData.requiresAttunement} onChange={handleChange} />
-        </div>
-
-        <div>
-          <label>Description:</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} />
-        </div>
-
-        <div>
-          <label>Gold Value (GP):</label>
-          <input type="number" name="valueGP" value={formData.valueGP} onChange={handleChange} />
-        </div>
+        <TextInput label="Name" name="name" value={formData.name} onChange={handleChange} />
+        <SelectInput label="Type" name="type" value={formData.type} options={magicItemSchema.shape.type.options} onChange={handleChange} />
+        <SelectInput label="Rarity" name="rarity" value={formData.rarity} options={magicItemSchema.shape.rarity.options} onChange={handleChange} />
+        <CheckboxInput label="Requires Attunement" name="requiresAttunement" checked={formData.requiresAttunement} onChange={handleChange} />
+        <TextInput label="Description" name="description" value={formData.description} onChange={handleChange} />
+        <NumberInput label="Gold Value (GP)" name="valueGP" value={formData.valueGP} onChange={handleChange} />
 
         <button onClick={handleUpdate}>Update Item</button>
         <button onClick={handleDelete}>Delete Item</button>
