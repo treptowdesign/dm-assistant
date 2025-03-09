@@ -8,6 +8,7 @@ import { updateMagicItem } from "@/app/actions/magicItems/updateMagicItem";
 import { deleteMagicItem } from "@/app/actions/magicItems/deleteMagicItem";
 import { magicItemSchema } from "@/schema/MagicItem";
 import TextInput from "@/app/components/inputs/TextInput";
+import TextareaInput from "@/app/components/inputs/TextareaInput";
 import SelectInput from "@/app/components/inputs/SelectInput";
 import CheckboxInput from "@/app/components/inputs/CheckboxInput";
 import NumberInput from "@/app/components/inputs/NumberInput";
@@ -39,7 +40,7 @@ export default function MagicItemPage() {
       setFormData((prev) => ({
         ...prev,
         ...data,
-        valueGP: data.valueGP || 0, // Ensure undefined doesn't break the number input
+        valueGP: data.valueGP || 0, // optional val
       }));
     }
     loadItem();
@@ -53,7 +54,7 @@ export default function MagicItemPage() {
   }
 
   async function handleUpdate() {
-    // Validate before sending
+    // validate 
     const validation = magicItemSchema.safeParse(formData);
     if (!validation.success) {
       setErrors(validation.error.errors);
@@ -89,7 +90,7 @@ export default function MagicItemPage() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>Edit Magic Item!!!!!</h1>
+        <h1>Edit Magic Item</h1>
 
         {errors && (
           <div className={styles.error}>
@@ -103,7 +104,7 @@ export default function MagicItemPage() {
         <SelectInput label="Type" name="type" value={formData.type} options={magicItemSchema.shape.type.options} onChange={handleChange} />
         <SelectInput label="Rarity" name="rarity" value={formData.rarity} options={magicItemSchema.shape.rarity.options} onChange={handleChange} />
         <CheckboxInput label="Requires Attunement" name="requiresAttunement" checked={formData.requiresAttunement} onChange={handleChange} />
-        <TextInput label="Description" name="description" value={formData.description} onChange={handleChange} />
+        <TextareaInput label="Description" name="description" value={formData.description} onChange={handleChange} />
         <NumberInput label="Gold Value (GP)" name="valueGP" value={formData.valueGP} onChange={handleChange} />
 
         <button onClick={handleUpdate}>Update Item</button>
