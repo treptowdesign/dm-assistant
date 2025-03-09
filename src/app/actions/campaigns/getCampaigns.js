@@ -10,8 +10,11 @@ export async function getCampaigns() {
 
     const campaigns = await prisma.campaign.findMany({
       where: { authorId: user.id },
+      include: { magicItems: true },
       orderBy: { id: "desc" },
     });
+
+    console.log("Campaigns:", campaigns);
 
     return campaigns;
   } catch (error) {

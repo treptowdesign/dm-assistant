@@ -10,7 +10,7 @@ export async function getCampaign(campaignId) {
 
     const campaign = await prisma.campaign.findUnique({
       where: { id: parseInt(campaignId, 10), authorId: user.id },
-      include: { magicItems: true }, // Fetch related Magic Items
+      include: { magicItems: true }, // fetch related Magic Items
     });
 
     if (!campaign) return { error: "Campaign not found" };
