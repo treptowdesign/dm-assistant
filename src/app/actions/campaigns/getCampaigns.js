@@ -14,7 +14,7 @@ export async function getCampaigns() {
       orderBy: { id: "desc" },
     });
 
-    console.log("Campaigns:", campaigns);
+    // console.log("Campaigns:", campaigns);
 
     return campaigns;
   } catch (error) {

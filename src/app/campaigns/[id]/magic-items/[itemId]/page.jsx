@@ -53,7 +53,8 @@ export default function MagicItemPage() {
     }));
   }
 
-  async function handleUpdate() {
+  async function handleUpdate(e) {
+    e.preventDefault();
     // validate 
     const validation = magicItemSchema.safeParse(formData);
     if (!validation.success) {
@@ -101,12 +102,30 @@ export default function MagicItemPage() {
         )}
 
         <form onSubmit={handleUpdate}>
-          <TextInput label="Name" name="name" value={formData.name} onChange={handleChange} />
-          <SelectInput label="Type" name="type" value={formData.type} options={magicItemSchema.shape.type.options} onChange={handleChange} />
-          <SelectInput label="Rarity" name="rarity" value={formData.rarity} options={magicItemSchema.shape.rarity.options} onChange={handleChange} />
-          <CheckboxInput label="Requires Attunement" name="requiresAttunement" checked={formData.requiresAttunement} onChange={handleChange} />
-          <TextareaInput label="Description" name="description" value={formData.description} onChange={handleChange} />
-          <NumberInput label="Gold Value (GP)" name="valueGP" value={formData.valueGP} onChange={handleChange} />
+          <TextInput label="Name" name="name" 
+            value={formData.name} onChange={handleChange} 
+          />
+          <SelectInput label="Type" name="type" 
+            options={magicItemSchema.shape.type.options} 
+            value={formData.type} onChange={handleChange} 
+          />
+          <SelectInput 
+            label="Rarity" name="rarity" 
+            options={magicItemSchema.shape.rarity.options} 
+            value={formData.rarity} onChange={handleChange} 
+          />
+          <CheckboxInput 
+            label="Requires Attunement" name="requiresAttunement" 
+            checked={formData.requiresAttunement} onChange={handleChange} 
+          />
+          <TextareaInput 
+            label="Description" name="description" 
+            value={formData.description} onChange={handleChange} 
+          />
+          <NumberInput 
+            label="Gold Value (GP)" name="valueGP" 
+            value={formData.valueGP} onChange={handleChange} 
+          />
           <button type="submit">Update Item</button>
         </form>
 
