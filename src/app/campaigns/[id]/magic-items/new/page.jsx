@@ -63,7 +63,10 @@ export default function NewMagicItemPage() {
   }
 
   async function handleGenerateMagicItem() {
-    if (!prompt.trim()) return;
+    if (!prompt.trim()) {
+      console.log("Prompt is empty.");
+      return;
+    };
     
     setLoading(true);
     setErrors(null);
@@ -113,18 +116,22 @@ export default function NewMagicItemPage() {
           <button type="submit">Create Item</button>
         </form>
 
-        <h2>Generate Magic Item</h2>
-        <textarea
-          placeholder="Describe the kind of magic item you'd like to generate..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          rows={4}
-          className={styles.textarea}
-        />
-
-        <button onClick={handleGenerateMagicItem} disabled={loading}>
-          {loading ? "Generating..." : "Generate Magic Item"}
-        </button>
+        <div>
+          <h2>Generate Magic Item</h2>
+          <textarea
+            placeholder="Describe the kind of magic item you'd like to generate..."
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            rows={4}
+            className={styles.textarea}
+          />
+          <div>
+            <button onClick={handleGenerateMagicItem} disabled={loading}>
+              {loading ? "Generating..." : "Generate Magic Item"}
+            </button>
+          </div>
+        </div>
+        
 
         <Link href={`/campaigns/${campaignId}`}>Back to Campaign</Link>
       </main>

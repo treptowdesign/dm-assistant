@@ -13,7 +13,7 @@ export default function TextareaInput({ label, name, value, onChange }) {
         <label>{label}:</label>
         <textarea
           ref={textareaRef}
-          style={{ width: "400px", resize: "none", overflow: "hidden", }}
+          style={{ width: "400px", resize: "none", overflow: "hidden"}}
           placeholder=""
           name={name} 
           value={value}

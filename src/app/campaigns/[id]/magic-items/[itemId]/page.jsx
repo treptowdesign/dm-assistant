@@ -100,14 +100,16 @@ export default function MagicItemPage() {
           </div>
         )}
 
-        <TextInput label="Name" name="name" value={formData.name} onChange={handleChange} />
-        <SelectInput label="Type" name="type" value={formData.type} options={magicItemSchema.shape.type.options} onChange={handleChange} />
-        <SelectInput label="Rarity" name="rarity" value={formData.rarity} options={magicItemSchema.shape.rarity.options} onChange={handleChange} />
-        <CheckboxInput label="Requires Attunement" name="requiresAttunement" checked={formData.requiresAttunement} onChange={handleChange} />
-        <TextareaInput label="Description" name="description" value={formData.description} onChange={handleChange} />
-        <NumberInput label="Gold Value (GP)" name="valueGP" value={formData.valueGP} onChange={handleChange} />
+        <form onSubmit={handleUpdate}>
+          <TextInput label="Name" name="name" value={formData.name} onChange={handleChange} />
+          <SelectInput label="Type" name="type" value={formData.type} options={magicItemSchema.shape.type.options} onChange={handleChange} />
+          <SelectInput label="Rarity" name="rarity" value={formData.rarity} options={magicItemSchema.shape.rarity.options} onChange={handleChange} />
+          <CheckboxInput label="Requires Attunement" name="requiresAttunement" checked={formData.requiresAttunement} onChange={handleChange} />
+          <TextareaInput label="Description" name="description" value={formData.description} onChange={handleChange} />
+          <NumberInput label="Gold Value (GP)" name="valueGP" value={formData.valueGP} onChange={handleChange} />
+          <button type="submit">Update Item</button>
+        </form>
 
-        <button onClick={handleUpdate}>Update Item</button>
         <button onClick={handleDelete}>Delete Item</button>
 
         <div>
