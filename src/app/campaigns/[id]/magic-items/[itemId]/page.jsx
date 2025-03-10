@@ -105,7 +105,7 @@ export default function MagicItemPage() {
 
         <button onClick={() => setIsEditing((prev) => !prev)}>{isEditing? 'Save' : 'Edit'}</button>
 
-        <div style={isEditing ? {border: "solid 1px red"} :  { border: 0 }}>
+        <div style={isEditing ? {border: "solid 1px red"} :  { border: "solid 1px transparent" }}>
           <TextInput label="Name" name="name" 
             value={formData.name} onChange={handleChange} 
           />
