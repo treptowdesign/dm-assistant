@@ -30,6 +30,8 @@ export default function MagicItemPage() {
   }));
   const [errors, setErrors] = useState(null);
 
+  const [isEditing, setIsEditing] = useState(false); // toggle edit mode
+
   useEffect(() => {
     async function loadItem() {
       const data = await getMagicItem(itemId);
@@ -100,6 +102,8 @@ export default function MagicItemPage() {
             ))}
           </div>
         )}
+
+        <button onClick={() => setIsEditing((prev) => !prev)}>{isEditing? 'Save' : 'Edit'}</button>
 
         <form onSubmit={handleUpdate}>
           <TextInput label="Name" name="name" 

@@ -82,6 +82,7 @@ export default function NewMagicItemPage() {
       if (data.error) {
         setErrors([{ message: data.error }]);
       } else {
+        console.log("Tokens Used:", data.total_tokens);
         setFormData(data.response); // pop with generated item
       }
     } catch (error) {
