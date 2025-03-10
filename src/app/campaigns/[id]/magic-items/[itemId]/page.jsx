@@ -56,7 +56,7 @@ export default function MagicItemPage() {
   }
 
   async function handleUpdate(e) {
-    e.preventDefault();
+    // e.preventDefault();
     // validate 
     const validation = magicItemSchema.safeParse(formData);
     if (!validation.success) {
@@ -105,7 +105,7 @@ export default function MagicItemPage() {
 
         <button onClick={() => setIsEditing((prev) => !prev)}>{isEditing? 'Save' : 'Edit'}</button>
 
-        <form onSubmit={handleUpdate}>
+        <div style={isEditing ? {border: "solid 1px red"} :  { border: 0 }}>
           <TextInput label="Name" name="name" 
             value={formData.name} onChange={handleChange} 
           />
@@ -130,8 +130,8 @@ export default function MagicItemPage() {
             label="Gold Value (GP)" name="valueGP" 
             value={formData.valueGP} onChange={handleChange} 
           />
-          <button type="submit">Update Item</button>
-        </form>
+          <button onClick={handleUpdate}>Update Item</button>
+        </div>
 
         <button onClick={handleDelete}>Delete Item</button>
 
