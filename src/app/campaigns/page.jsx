@@ -3,7 +3,7 @@
 import { getCampaigns } from "@/app/actions/campaigns/getCampaigns";
 import { createCampaign } from "@/app/actions/campaigns/createCampaign";
 import Form from "next/form";
-import styles from "@/app/page.module.sass";
+import styles from "@/app/campaigns/styles.module.sass"; 
 import CampaignList from "./CampaignList"; // import Client Component
 import CampaignsFooter from "./CampaignsFooter"; // import Client Component footer (for <Link>)
 
@@ -14,9 +14,9 @@ export default async function CampaignsPage() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>Campaigns</h1>
+        <h1 className={styles.headline}>Campaigns</h1>
 
-        <Form action={createCampaign}> 
+        <Form action={createCampaign} className={styles.cform}> 
           <input type="text" name="name" placeholder="Campaign Name" required />
           <textarea name="description" placeholder="Description" required />
           <button type="submit">Create Campaign</button> 
