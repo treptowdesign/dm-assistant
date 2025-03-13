@@ -16,7 +16,9 @@ export default async function CampaignsPage() {
       <main className={styles.main}>
         <h1 className={styles.headline}>Campaigns</h1>
 
+
         <Form action={createCampaign} className={styles.cform}> 
+          <h2>Create New Campaign:</h2>
           <input type="text" name="name" placeholder="Campaign Name" required />
           <textarea name="description" placeholder="Description" required />
           <button type="submit">Create Campaign</button> 
