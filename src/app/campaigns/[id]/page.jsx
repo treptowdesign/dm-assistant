@@ -6,7 +6,7 @@ import Link from "next/link";
 import { getCampaign } from "@/app/actions/campaigns/getCampaign";
 import { updateCampaign } from "@/app/actions/campaigns/updateCampaign";
 import { deleteCampaign } from "@/app/actions/campaigns/deleteCampaign";
-import styles from "@/app/page.module.css";
+import styles from "@/app/page.module.sass";
 
 export default function CampaignPage() {
   const params = useParams();

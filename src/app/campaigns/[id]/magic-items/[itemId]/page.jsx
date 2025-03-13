@@ -12,7 +12,7 @@ import TextareaInput from "@/app/components/inputs/TextareaInput";
 import SelectInput from "@/app/components/inputs/SelectInput";
 import CheckboxInput from "@/app/components/inputs/CheckboxInput";
 import NumberInput from "@/app/components/inputs/NumberInput";
-import styles from "@/app/page.module.css";
+import styles from "@/app/page.module.sass";
 
 export default function MagicItemPage() {
   const params = useParams();
@@ -44,6 +44,7 @@ export default function MagicItemPage() {
         ...data,
         valueGP: data.valueGP || 0, // optional val
       }));
+      console.log("Magic Item data:", data);
     }
     loadItem();
   }, [itemId]);

@@ -3,7 +3,7 @@
 import { getCampaigns } from "@/app/actions/campaigns/getCampaigns";
 import { createCampaign } from "@/app/actions/campaigns/createCampaign";
 import Form from "next/form";
-import styles from "@/app/page.module.css";
+import styles from "@/app/page.module.sass";
 import CampaignList from "./CampaignList"; // import Client Component
 import CampaignsFooter from "./CampaignsFooter"; // import Client Component footer (for <Link>)
 

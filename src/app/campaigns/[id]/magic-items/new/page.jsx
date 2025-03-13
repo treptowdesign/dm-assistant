@@ -10,7 +10,7 @@ import TextareaInput from "@/app/components/inputs/TextareaInput";
 import SelectInput from "@/app/components/inputs/SelectInput";
 import CheckboxInput from "@/app/components/inputs/CheckboxInput";
 import NumberInput from "@/app/components/inputs/NumberInput";
-import styles from "@/app/page.module.css";
+import styles from "@/app/page.module.sass";
 
 export default function NewMagicItemPage() {
   const params = useParams();
