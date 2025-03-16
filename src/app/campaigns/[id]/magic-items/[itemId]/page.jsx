@@ -7,11 +7,19 @@ import { getMagicItem } from "@/app/actions/magicItems/getMagicItem";
 import { updateMagicItem } from "@/app/actions/magicItems/updateMagicItem";
 import { deleteMagicItem } from "@/app/actions/magicItems/deleteMagicItem";
 import { magicItemSchema } from "@/schema/MagicItem";
-import TextInput from "@/app/components/inputs/TextInput";
-import TextareaInput from "@/app/components/inputs/TextareaInput";
-import SelectInput from "@/app/components/inputs/SelectInput";
-import CheckboxInput from "@/app/components/inputs/CheckboxInput";
-import NumberInput from "@/app/components/inputs/NumberInput";
+
+// import TextInput from "@/app/components/inputs/TextInput";
+// import SelectInput from "@/app/components/inputs/SelectInput";
+// import CheckboxInput from "@/app/components/inputs/CheckboxInput";
+// import NumberInput from "@/app/components/inputs/NumberInput";
+// import TextareaInput from "@/app/components/inputs/TextareaInput";
+
+import TextControl from "@/app/components/toggle-inputs/TextControl.jsx";
+import SelectControl from "@/app/components/toggle-inputs/SelectControl.jsx";
+import CheckboxControl from "@/app/components/toggle-inputs/CheckboxControl.jsx";
+import NumberControl from "@/app/components/toggle-inputs/NumberControl.jsx";
+import TextareaControl from "@/app/components/toggle-inputs/TextareaControl.jsx";
+
 import styles from "@/app/page.module.sass";
 
 export default function MagicItemPage() {
@@ -56,6 +64,10 @@ export default function MagicItemPage() {
     }));
   }
 
+  function toggleIsEditing(){
+    setIsEditing(true);
+  }
+
   async function handleUpdate(e) {
     // e.preventDefault();
     // validate 
@@ -77,6 +89,7 @@ export default function MagicItemPage() {
     } else {
       setFormData(validation.data);
     }
+    setIsEditing(false); // exit edit mode
   }
 
   async function handleDelete() {
@@ -104,34 +117,40 @@ export default function MagicItemPage() {
           </div>
         )}
 
-        <button onClick={() => setIsEditing((prev) => !prev)}>{isEditing? 'Save' : 'Edit'}</button>
+        <div>
 
-        <div style={isEditing ? {border: "solid 1px red"} :  { border: "solid 1px transparent" }}>
-          <TextInput label="Name" name="name" 
+          <TextControl label="Name" name="name" 
             value={formData.name} onChange={handleChange} 
+            isEditing={isEditing}
           />
-          <SelectInput label="Type" name="type" 
+          <SelectControl label="Type" name="type" 
             options={magicItemSchema.shape.type.options} 
             value={formData.type} onChange={handleChange} 
+            isEditing={isEditing}
           />
-          <SelectInput 
+          <SelectControl 
             label="Rarity" name="rarity" 
             options={magicItemSchema.shape.rarity.options} 
             value={formData.rarity} onChange={handleChange} 
+            isEditing={isEditing}
           />
-          <CheckboxInput 
+          <CheckboxControl
             label="Requires Attunement" name="requiresAttunement" 
-            checked={formData.requiresAttunement} onChange={handleChange} 
+            checked={formData.requiresAttunement} onChange={handleChange}
+            isEditing={isEditing} 
           />
-          <TextareaInput 
+          <TextareaControl 
             label="Description" name="description" 
             value={formData.description} onChange={handleChange} 
+            isEditing={isEditing} 
           />
-          <NumberInput 
+          <NumberControl 
             label="Gold Value (GP)" name="valueGP" 
             value={formData.valueGP} onChange={handleChange} 
+            isEditing={isEditing} 
           />
-          <button onClick={handleUpdate}>Update Item</button>
+
+          <button onClick={isEditing ? handleUpdate : toggleIsEditing}>{isEditing? 'Save' : 'Edit'}</button>
         </div>
 
         <button onClick={handleDelete}>Delete Item</button>
