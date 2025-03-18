@@ -52,7 +52,7 @@ export default function MagicItemPage() {
         ...data,
         valueGP: data.valueGP || 0, // optional val
       }));
-      console.log("Magic Item data:", data);
+      // console.log("Magic Item data:", data);
     }
     loadItem();
   }, [itemId]);
