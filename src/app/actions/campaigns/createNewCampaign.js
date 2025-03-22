@@ -12,14 +12,15 @@ export async function createNewCampaign({name, description}) {
         if (!user) return { error: "Unauthorized" };
     
         if (!name || !description) {
-        return { error: "Name and description are required." };
+            return { error: "Name and description are required." };
         }
     
         await prisma.campaign.create({
             data: { name, description, authorId: user.id },
         });
-    
+        
         revalidatePath("/campaigns");
+        return { message: `Campaign created: ${name}` };
     } catch (error) {
         console.error("Error creating campaign:", error);
         return { error: "Internal server error" };

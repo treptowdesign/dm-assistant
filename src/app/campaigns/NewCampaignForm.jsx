@@ -8,19 +8,19 @@ export default function NewCampaignForm() {
     const [error, setError] = useState(null);
 
     async function handleCreateCampaign() {
-        console.log("Creating campaign:", formState);
         setError(null);
         const result = await createNewCampaign(formState);
         if (result?.error) {
             setError(result.error);
         } else {
+            if(result?.message) console.log(result.message);
             setFormState({ name: "", description: "" });
         }
     }
 
     return (
       <div>
-        <h2>Create New Campaign (client form):</h2>
+        <h2>Create New Campaign:</h2>
         <input 
             type="text" 
             name="name" 
