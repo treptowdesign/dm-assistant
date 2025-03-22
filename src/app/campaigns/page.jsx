@@ -16,7 +16,6 @@ export default async function CampaignsPage() {
       <main className={styles.main}>
         <h1 className={styles.headline}>Campaigns</h1>
 
-
         <Form action={createCampaign} className={styles.cform}> 
           <h2>Create New Campaign:</h2>
           <input type="text" name="name" placeholder="Campaign Name" required />
@@ -24,7 +23,7 @@ export default async function CampaignsPage() {
           <button type="submit">Create Campaign</button> 
         </Form>
 
-        <CampaignList campaigns={campaigns} /> {/* pass data to Client Component */}
+        <CampaignList campaigns={campaigns} />
 
         <CampaignsFooter />
 
