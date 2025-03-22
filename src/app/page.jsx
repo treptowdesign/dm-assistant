@@ -13,15 +13,6 @@ export default async function Home() {
         <b className={styles.status}>
           {userData ? (<h4>Welcome {userData.email}, id: ({userData.id})</h4>) : (<h4>Logged out</h4>)}
         </b>
-
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
         
         <AuthNav />
         <TestBtn />
