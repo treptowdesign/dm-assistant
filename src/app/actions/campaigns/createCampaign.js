@@ -1,5 +1,7 @@
 "use server";
 
+// createCampaign - this action uses takes formData from the server <Form> to create a new campaign
+
 import prisma from "@/models/prismaClient";
 import { getUserFromServer } from "@/app/actions/auth/getUser";
 import { revalidatePath } from "next/cache";
