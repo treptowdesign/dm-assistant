@@ -7,13 +7,6 @@ import { getMagicItem } from "@/app/actions/magicItems/getMagicItem";
 import { updateMagicItem } from "@/app/actions/magicItems/updateMagicItem";
 import { deleteMagicItem } from "@/app/actions/magicItems/deleteMagicItem";
 import { magicItemSchema } from "@/schema/MagicItem";
-
-// import TextInput from "@/app/components/inputs/TextInput";
-// import SelectInput from "@/app/components/inputs/SelectInput";
-// import CheckboxInput from "@/app/components/inputs/CheckboxInput";
-// import NumberInput from "@/app/components/inputs/NumberInput";
-// import TextareaInput from "@/app/components/inputs/TextareaInput";
-
 import TextControl from "@/app/components/toggle-inputs/TextControl.jsx";
 import SelectControl from "@/app/components/toggle-inputs/SelectControl.jsx";
 import CheckboxControl from "@/app/components/toggle-inputs/CheckboxControl.jsx";
@@ -37,7 +30,6 @@ export default function MagicItemPage() {
     valueGP: 0,
   }));
   const [errors, setErrors] = useState(null);
-
   const [isEditing, setIsEditing] = useState(false); // toggle edit mode
 
   useEffect(() => {
@@ -52,7 +44,7 @@ export default function MagicItemPage() {
         ...data,
         valueGP: data.valueGP || 0, // optional val
       }));
-      // console.log("Magic Item data:", data);
+      console.log("Magic Item data:", data);
     }
     loadItem();
   }, [itemId]);
