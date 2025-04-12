@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "./page.module.sass";
 import AuthNav from "@/app/components/AuthNav";
 import TestBtn from "@/app/components/TestBtn"; 

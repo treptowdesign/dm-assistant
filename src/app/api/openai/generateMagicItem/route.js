@@ -17,12 +17,16 @@ export async function POST(request) {
 
     const completion = await openai.beta.chat.completions.parse({
         model: "gpt-4o-mini",
+        temperature: 1.2,
+        top_p: 0.95,
         messages: [
-          { role: "system", content: "You are a creative and knowledgeable D&D Dungeon Master. Generate a detailed 5e D&D magic item based on the given prompt. The item should be balanced and formatted according to standard 5e rules." },
+          { role: "system", content: "You are a highly creative and original D&D Dungeon Master with a deep knowledge of 5e magic items. Generate a unique and imaginative D&D 5e magic item based on the prompt. Avoid common or overused names and effects. Push your creativity while keeping the item balanced and usable in most campaigns. Surprise the user with clever, unexpected, or strange design elements." },
           { role: "user", content: prompt },
         ],
         response_format: zodResponseFormat(magicItemSchema, "magic_item"),
     });
+
+    console.log('Temp & Top_P v0.3'); 
 
     return NextResponse.json({
       response: JSON.parse(completion.choices[0]?.message?.content || '{}'),
