@@ -30,7 +30,7 @@ export default function MagicItemPage() {
     valueGP: 0,
   }));
   const [errors, setErrors] = useState(null);
-  const [isEditing, setIsEditing] = useState(false); // toggle edit mode
+  const [isEditing, setIsEditing] = useState(false); // toggle edit mode 
 
   useEffect(() => {
     async function loadItem() {
